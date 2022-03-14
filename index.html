@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+
+    <style>
+        .fly {
+            position: absolute;
+            border: 1px solid black;
+            width: 100px;
+            height: 100px;
+            transition: 0.1s;
+        }
+
+        .a2 {
+            margin-top: 105px;
+        }
+
+        .a3 {
+            margin-top: 210px;
+        }
+
+        .b2 {
+            margin-left: 105px;
+        }
+
+        .b3 {
+            margin-left: 210px;
+        }
+
+        .btn {
+            margin-top: 315px;
+            width: 100px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='fly a1 b1' id='1'>1</div>
+    <div class='fly a1 b2' id='2'>2</div>
+    <div class='fly a1 b3' id='3'>3</div>
+
+    <div class='fly a2 b1' id='4'>4</div>
+    <div class='fly a2 b2' id='5'>5</div>
+    <div class='fly a2 b3' id='6'>6</div>
+
+    <div class='fly a3 b1' id='7'>7</div>
+    <div class='fly a3 b2' id='8'>8</div>
+    <div class='fly a3 b3' id='9'>9</div>
+
+    <button class='btn' onclick='go()'>배치</button>
+
+    <script>
+        function getel(e) {
+            return document.getElementById(e)
+        }
+
+        function go() {
+            var list = document.getElementsByClassName('fly');
+
+            for (let i = 0; i < list.length; i++) {
+                var e = list[i];
+                e.classList.remove('a1');
+                e.classList.remove('a2');
+                e.classList.remove('a3');
+                e.classList.remove('b1');
+                e.classList.remove('b2');
+                e.classList.remove('b3');
+            }
+
+            var seats = [
+                ['a1', 'b1'],
+                ['a1', 'b2'],
+                ['a1', 'b3'],
+                ['a2', 'b1'],
+                ['a2', 'b2'],
+                ['a2', 'b3'],
+                ['a3', 'b1'],
+                ['a3', 'b2'],
+                ['a3', 'b3'],
+            ]
+
+            for (let i = 0; i < 9; i++) {
+                var r = Math.floor(Math.random() * seats.length);
+                var seat = seats[r];
+                getel(i + 1).classList.add(seat[0], seat[1]);
+                seats.splice(r, 1);
+                console.log(seats);
+            }
+        }
+
+        function batch(n) {
+            var list = document.getElementsByClassName(n);
+
+            for (let i = 0; i < list.length; i++) {
+                var e = list[i];
+                e.style.marginTop = '105px';
+
+            }
+        }
+    </script>
+</body>
+
+</html>
