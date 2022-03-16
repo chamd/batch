@@ -1,0 +1,49 @@
+:root {
+    --num: 105px;
+}
+
+.fly {
+    position: absolute;
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    transition: 0.5s;
+}
+
+.a2 {
+    margin-top: calc( var(--num) * 1 );
+}
+
+.a3 {
+    margin-top: calc( var(--num) * 2 );
+}
+
+.a4 {
+    margin-top: calc( var(--num) * 3 );
+}
+
+.a5 {
+    margin-top: calc( var(--num) * 4 );
+}
+
+.b2 {
+    margin-left: calc( var(--num) * 1 );
+}
+
+.b3 {
+    margin-left: calc( var(--num) * 2 );
+}
+
+.b4 {
+    margin-left: calc( var(--num) * 3 );
+}
+
+.b5 {
+    margin-left: calc( var(--num) * 4 );
+}
+
+.btn {
+    margin-top: calc( var(--num) * 5 );
+    width: 100px;
+    height: 50px;
+}
