@@ -3,61 +3,66 @@ function getel(e) {
 }
 
 function go() {
-    var list = document.getElementsByClassName('fly');
+    var list = document.getElementsByClassName('seat');
 
     for (let i = 0; i < list.length; i++) {
         var e = list[i];
         e.classList.remove('a1');
         e.classList.remove('a2');
         e.classList.remove('a3');
+        e.classList.remove('a4');
+        e.classList.remove('a5');
         e.classList.remove('b1');
         e.classList.remove('b2');
         e.classList.remove('b3');
+        e.classList.remove('b4');
+        e.classList.remove('b5');
+        e.classList.add('dispenser');
     }
 
-    var seats = [];
-
-    for (let i = 1; i <= 5; i++) {
-        for (let j = 1; j <= 5; j++) {
-            seats.push([i, j]);
+    setTimeout(() => {
+        for (let i = 0; i < list.length; i++) {
+            var e = list[i];
+            e.classList.remove('a1');
+            e.classList.remove('a2');
+            e.classList.remove('a3');
+            e.classList.remove('a4');
+            e.classList.remove('a5');
+            e.classList.remove('b1');
+            e.classList.remove('b2');
+            e.classList.remove('b3');
+            e.classList.remove('b4');
+            e.classList.remove('b5');
         }
-    }
 
-    for (let i = 0; i < 25; i++) {
-        var r = Math.floor(Math.random() * seats.length);
-        var seat = seats[r];
-        getel(i + 1).classList.add(seat[0], seat[1]);
-        seats.splice(r, 1);
-        console.log(seats);
-    }
-}
+        var seats = [];
 
-var seats = [];
-
-    for (let i = 1; i <= 5; i++) {
-        for (let j = 1; j <= 5; j++) {
-            seats.push([i, j]);
+        for (let i = 1; i <= 5; i++) {
+            for (let j = 1; j <= 5; j++) {
+                seats.push(['a' + i, 'b' + j]);
+            }
         }
-    }
 
-    console.log(seats);
-
-function batch(n) {
-    var list = document.getElementsByClassName(n);
-
-    for (let i = 0; i < list.length; i++) {
-        var e = list[i];
-        e.style.marginTop = '105px';
-
-    }
+        for(let i = 0; i < 25; i++){
+            (function(x){
+              setTimeout(function(){
+                var r = Math.floor(Math.random() * seats.length);
+                var seat = seats[r];
+                getel(i + 1).classList.remove('dispenser');
+                getel(i + 1).classList.add(seat[0], seat[1]);
+                seats.splice(r, 1);
+              }, 100*x);
+            })(i);
+          }
+    }, 1000);
 }
 
 var ids = 1
 
 for (let i = 1; i <= 5; i++) {
     for (let j = 1; j <= 5; j++) {
-        document.getElementById('content').innerHTML += `<div class='fly a${i} b${j}' id='${ids}'>${ids}</div>`;
-        ids ++;
+        document.getElementById('content').innerHTML += `<div class='seat a${i} b${j}' id='${ids}'>${ids}</div>`;
+        ids++;
     }
 }
 
