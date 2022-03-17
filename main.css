@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Godo';
+    src: url('GodoM.ttf');
+}
+
 :root {
     --num1: 110px;
     --num2: 150px;
@@ -7,6 +12,10 @@ body, html {
     background: linear-gradient(to right, #94B3E2, #c5b4e3);
 }
 
+html * {
+    font-family: 'Godo';
+}
+
 .seat {
     position: absolute;
     width: 140px;
@@ -14,6 +23,8 @@ body, html {
     transition: 1s ease;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 50%);
+    line-height: 100px;
+    font-size: 30px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
@@ -21,7 +32,7 @@ body, html {
     text-align: center;
 }
 
-#content:not(.fly) {
+#content {
     margin-left: calc(50% - 375px);
 }
 
@@ -58,46 +69,38 @@ body, html {
 }
 
 .btn1, .btn2 {
-    width: 250px;
-    height: 100px;
-    margin-top: 120px;
     margin-bottom: 20px;
     border-radius: 20px;
     border: none;
     background-color: rgba(255, 255, 255, 50%);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     font-size: 40px;
+    padding-top: 10px;
 }
 
-.btn1:hover, .btn2:hover, .btn3:hover{
+.btn1 {
+    width: 250px;
+    height: 100px;
+    margin-top: 120px;
+}
+
+.btn1:hover, .btn2:hover {
     background-color: rgba(236, 236, 236, 0.5);
 }
 
-.btn1:active, .btn2:active, .btn3:active {
+.btn1:active, .btn2:active {
     background-color: rgba(211, 211, 211, 0.5);
 }
 
-.btn1 p, .btn2 p, .btn3 p {
+.btn1 p, .btn2 p {
     margin-top: 0px;
     font-size: 20px;
 }
 
 .btn2 {
-    width: 200px;
-    position: absolute;
-    margin-left: -250px;
-}
-
-.btn3 {
     width: 750px;
     height: 90px;
     margin-top: 10px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    border: none;
-    background-color: rgba(255, 255, 255, 50%);
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-    font-size: 40px;
     position: absolute;
     margin-left: -250px;
 }
@@ -108,16 +111,41 @@ body, html {
 }
 
 #nameInput {
-    z-index: 1;
+    z-index: 2;
     width: 250px;
     height: 100px;
     font-size: 50px;
     position: absolute;
     border-radius: 15px;
-    margin-top: 200px;
     border: none;
+    margin-left: -125px;
+    text-align: center;
+    margin-top: 30px;
+    background-color: rgb(235, 235, 235);
 }
 
 .inv {
     display: none;
+}
+
+#popup {
+    z-index: 1;
+    position: absolute;
+    width: 750px;
+    height: 700px;
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-left: calc(50% - 385px);
+    margin-top: 100px;
+    border-radius: 30px;
+}
+
+#nameList {
+    margin-top: 150px;
+    text-align: left;
+    display:flex; 
+    align-content:flex-start; 
+    flex-direction:column; 
+    flex-wrap:wrap; 
+    overflow:auto;
+    height: 300px;
 }

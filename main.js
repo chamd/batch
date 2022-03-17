@@ -35,50 +35,59 @@ function setSeat() {
             e.classList.remove('b5');
         }
 
-        var seats = [];
+        var _seats = [];
 
         for (let i = 1; i <= 5; i++) {
             for (let j = 1; j <= 5; j++) {
-                seats.push(['a' + i, 'b' + j]);
+                _seats.push(['a' + i, 'b' + j]);
             }
         }
 
-        for(let i = 0; i < 25; i++){
-            (function(x){
-              setTimeout(function(){
-                var r = Math.floor(Math.random() * seats.length);
-                var seat = seats[r];
-                getel(i + 1).classList.remove('dispenser');
-                getel(i + 1).classList.add(seat[0], seat[1]);
-                seats.splice(r, 1);
-              }, 100*x);
+        for (let i = 0; i < 25; i++) {
+            (function (x) {
+                setTimeout(function () {
+                    var r = Math.floor(Math.random() * _seats.length);
+                    var seat = _seats[r];
+                    getel(i + 1).classList.remove('dispenser');
+                    getel(i + 1).classList.add(seat[0], seat[1]);
+                    _seats.splice(r, 1);
+                }, 100 * x);
             })(i);
-          }
+        }
     }, 1000);
 }
 
-var test = [];
+var seats = [];
 
-for (let i = 1; i <= 25; i++) {
-    test.push(`조찬아${i}`);
-}
+function formatSeat() {
+    document.getElementById('content').innerHTML = '';
 
-var ids = 1
+    var ids = 1
 
-for (let i = 1; i <= 5; i++) {
-    for (let j = 1; j <= 5; j++) {
-        document.getElementById('content').innerHTML += `<div class='seat a${i} b${j}' id='${ids}'>${test[ids-1]}</div>`;
-        ids++;
+    for (let i = 1; i <= 5; i++) {
+        for (let j = 1; j <= 5; j++) {
+            if (seats[ids - 1]) {
+                document.getElementById('content').innerHTML += `<div class='seat a${i} b${j}' id='${ids}'>${seats[ids - 1]}</div>`;
+            } else {
+                document.getElementById('content').innerHTML += `<div class='seat a${i} b${j}' id='${ids}'></div>`;
+            }
+            ids++;
+        }
     }
 }
 
-document.body.addEventListener("keydown", function(e){
-    if(e.keyCode == 13){
+formatSeat();
+
+document.body.addEventListener("keydown", function (e) {
+    if (e.keyCode == 13) {
+        seats.push(getel('nameInput').value);
+        seats.sort();
         getel('nameInput').value = '';
+        formatSeat();
     }
 });
 
 function setName() {
-    getel('nameInput').classList.toggle('inv');
+    getel('popup').classList.toggle('inv');
     getel('nameInput').select();
 }
