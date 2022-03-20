@@ -5,57 +5,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>test</title>
+    <title>자리배치</title>
 
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 
 <body>
-    <div class="outer">
-        <div id="popup" class='inv'>
-            <input id='nameInput' placeholder="떠든사람">
+    <div id="popup">
+        <input id='nameInput' placeholder="이름 추가">
+        <button class='optionbtns save' onclick="saveSeats();"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button class='optionbtns load' onclick="openTextFile();"><i class="fa-solid fa-file-import"></i></button>
+        <button class='optionbtns saveload' onclick="openSLMenu();"><i class="fa-solid fa-folder-open"></i></button>
+        <div id="slMenuCover"></div>
+        <div id="nameOuter">
             <ul id="nameList">
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-                <li>12321</li>
-            </ul>        
+            </ul>
         </div>
-
-        <button class='btn2' onclick='setName();'>
-            칠판
-            <p>NAME</p>
-        </button>
-
-        <button class='btn1' onclick='setSeat();'>
-            교탁
-            <p>GO!</p>
-        </button>
-
-        <div id="content"></div>
     </div>
-    
+
+    <button class='btn2' onclick='option();'>
+        칠판
+        <p>OPTION</p>
+    </button>
+
+    <button class='btn1' onclick='setSeat();'>
+        교탁
+        <p>GO!</p>
+    </button>
+
+    <!-- <i class="fa-solid fa-arrows-rotate"></i> -->
+    <!-- <i class="fa-solid fa-thumbtack"></i> -->
+    <!-- <i class="fa-solid fa-pen-to-square"></i> -->
+
+    <button class='optionbtns mode' onclick="changeMode();"><i class="fa-solid fa-arrows-rotate"></i></button>
+
+    <div id="content"></div>
 
     <script src="main.js"></script>
 
