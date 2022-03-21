@@ -2,6 +2,97 @@ var a;
 var b;
 var all;
 
+var isSelectSeat = false;
+var selectedSeat;
+var pinnedSeat = [];
+
+function changeSeat(n) {
+    if (nowMode == 1) {
+        if (getel(n).classList[2] != 'pin') {
+            getel(n).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+            pinnedSeat.push(getel(n).className);
+            getel(n).classList.add('pin');
+        } else {
+            getel(n).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            getel(n).classList.remove('pin');
+            var _index = pinnedSeat.indexOf(getel(n).className);
+            if (_index != -1) {
+                pinnedSeat.splice(_index, 1);
+            }
+        }
+    } else {
+        if (!isSelectSeat) {
+            getel(n).style.backgroundColor = 'rgba(69, 52, 218, 0.5)';
+            selectedSeat = n;
+            isSelectSeat = true
+        } else {
+            getel(n).style.transition = '0.3s';
+            getel(selectedSeat).style.transition = '0.3s';
+            getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            var _change = getel(selectedSeat).className;
+            getel(selectedSeat).className = getel(n).className;
+            getel(n).className = _change;
+            [seats[n - 1], seats[selectedSeat - 1]] = [seats[selectedSeat - 1], seats[n - 1]];
+            setTimeout(() => {
+                formatSeat();
+            }, 300);
+            selectedSeat = '';
+            isSelectSeat = false;
+        }    
+    }
+}
+
+function setHover() {
+    var els = document.querySelectorAll('div[seat]');
+    Array.from(els).forEach(function (el) {
+        el.addEventListener('mouseover', (e) => {
+            el.style.transition = '0.1s';
+            if (nowMode == 1) {
+                el.style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
+            } else {
+                el.style.boxShadow = 'rgb(69, 52, 218) 0px 0px 0px 5px';
+            }
+        });
+        el.addEventListener('mouseout', (e) => {
+            el.style.transition = '1s';
+            el.style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+        });
+    });
+}
+
+var seats = [];
+
+function formatSeat() {
+    getel('content').innerHTML = '';
+    getel('nameList').innerHTML = '';
+
+    var ids = 1
+
+    for (let i = 1; i <= a; i++) {
+        for (let j = 1; j <= b; j++) {
+            if (pinnedSeat.indexOf(`a${i} b${j}`) == -1) {
+                if (seats[ids - 1]) {
+                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
+                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
+                } else {
+                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'></div>`;
+                }
+            } else {
+                if (seats[ids - 1]) {
+                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
+                    getel(ids).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
+                } else {
+                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'></div>`;
+                    getel(ids).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+                }
+            }
+            ids++;
+        }
+    }
+    setHover();
+}
+
 var isSaveload = true;
 
 function formatVars(_a, _b) {
@@ -18,10 +109,16 @@ function formatVars(_a, _b) {
         document.getElementsByClassName('load')[0].style.display = 'none';
         document.getElementsByClassName('save')[0].style.marginLeft = '135px';
         document.getElementsByClassName('load')[0].style.marginLeft = '225px';
+        document.getElementsByClassName('wid')[0].style.display = 'none';
+        document.getElementsByClassName('hei')[0].style.display = 'none';
+        document.getElementsByClassName('wid')[0].style.marginRight = '225px';
+        document.getElementsByClassName('hei')[0].style.marginRight = '135px';
     }
+
+    formatSeat();
 }
 
-formatVars(5, 5);
+formatVars(6, 4);
 
 function getel(e) {
     return document.getElementById(e)
@@ -35,13 +132,41 @@ function openSLMenu() {
         document.getElementsByClassName('save')[0].style.display = 'block';
         document.getElementsByClassName('load')[0].style.display = 'block';
         getel('slMenuCover').style.display = 'block';
+
         isSLMenuOpen = true;    
+        if (isWHMenuOpen) {
+            openWHMenu();
+        }
     } else {
         document.getElementsByClassName('saveload')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
         document.getElementsByClassName('save')[0].style.display = 'none';
         document.getElementsByClassName('load')[0].style.display = 'none';
         getel('slMenuCover').style.display = 'none';
+
         isSLMenuOpen = false;    
+    }
+}
+
+var isWHMenuOpen = false;
+
+function openWHMenu() {
+    if (!isWHMenuOpen) {
+        document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgb(69, 52, 218) 0px 0px 0px 5px';
+        document.getElementsByClassName('wid')[0].style.display = 'block';
+        document.getElementsByClassName('hei')[0].style.display = 'block';
+        getel('whMenuCover').style.display = 'block';
+
+        isWHMenuOpen = true;    
+        if (isSLMenuOpen) {
+            openSLMenu();
+        }
+    } else {
+        document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+        document.getElementsByClassName('wid')[0].style.display = 'none';
+        document.getElementsByClassName('hei')[0].style.display = 'none';
+        getel('whMenuCover').style.display = 'none';
+
+        isWHMenuOpen = false;    
     }
 }
 
@@ -95,81 +220,6 @@ function setSeat() {
     }, 1000);
 }
 
-var isSelectSeat = false;
-var selectedSeat;
-var pinnedSeat = [];
-
-function changeSeat(n) {
-    if (nowMode == 1) {
-        if (getel(n).classList[2] != 'pin') {
-            getel(n).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
-            pinnedSeat.push(getel(n).className);
-            getel(n).classList.add('pin');
-        } else {
-            getel(n).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-            getel(n).classList.remove('pin');
-            var _index = pinnedSeat.indexOf(getel(n).className);
-            if (_index != -1) {
-                pinnedSeat.splice(_index, 1);
-            }
-        }
-    } else {
-        if (!isSelectSeat) {
-            getel(n).style.backgroundColor = 'rgba(69, 52, 218, 0.5)';
-            selectedSeat = n;
-            isSelectSeat = true
-        } else {
-            getel(n).style.transition = '0.3s';
-            getel(selectedSeat).style.transition = '0.3s';
-            getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-            var _change = getel(selectedSeat).className;
-            getel(selectedSeat).className = getel(n).className;
-            getel(n).className = _change;
-            [seats[n - 1], seats[selectedSeat - 1]] = [seats[selectedSeat - 1], seats[n - 1]];
-            setTimeout(() => {
-                formatSeat();
-            }, 300);
-            selectedSeat = '';
-            isSelectSeat = false;
-        }    
-    }
-}
-
-var seats = [];
-
-function formatSeat() {
-    getel('content').innerHTML = '';
-    getel('nameList').innerHTML = '';
-
-    var ids = 1
-
-    for (let i = 1; i <= a; i++) {
-        for (let j = 1; j <= b; j++) {
-            if (pinnedSeat.indexOf(`a${i} b${j}`) == -1) {
-                if (seats[ids - 1]) {
-                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
-                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
-                } else {
-                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'></div>`;
-                }
-            } else {
-                if (seats[ids - 1]) {
-                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
-                    getel(ids).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
-                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
-                } else {
-                    getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'></div>`;
-                    getel(ids).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
-                }
-            }
-            ids++;
-        }
-    }
-    setHover();
-}
-
-formatSeat();
-
 getel('nameInput').addEventListener("keydown", function (e) {
     if (e.keyCode == 13) {
         if (getel('nameInput').value != '') {
@@ -191,10 +241,15 @@ function option() {
         getel('nameInput').style.display = 'inline';
         if (isSaveload) {
             document.getElementsByClassName('save')[0].style.display = 'block';
-            document.getElementsByClassName('load')[0].style.display = 'block';    
+            document.getElementsByClassName('load')[0].style.display = 'block';
+            document.getElementsByClassName('wid')[0].style.display = 'block';
+            document.getElementsByClassName('hei')[0].style.display = 'block';   
         } else {
             document.getElementsByClassName('saveload')[0].style.display = 'block';    
+            document.getElementsByClassName('widhei')[0].style.display = 'block';    
         }
+         
+
         isPopup = true;
     } else {
         getel('popup').style.height = '0';
@@ -207,8 +262,15 @@ function option() {
             document.getElementsByClassName('load')[0].style.display = 'none';
             document.getElementsByClassName('saveload')[0].style.display = 'none';
             document.getElementsByClassName('saveload')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+            document.getElementsByClassName('wid')[0].style.display = 'none';
+            document.getElementsByClassName('hei')[0].style.display = 'none';    
+            document.getElementsByClassName('widhei')[0].style.display = 'none';
+            document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+    
             isSLMenuOpen = false;
             getel('slMenuCover').style.display = 'none';
+            isWHMenuOpen = false;
+            getel('whMenuCover').style.display = 'none';
         }, 150);
 
         isPopup = false;
@@ -254,24 +316,6 @@ function removeSeat(n) {
     formatSeat();
 }
 
-function setHover() {
-    var els = document.querySelectorAll('div[seat]');
-    Array.from(els).forEach(function (el) {
-        el.addEventListener('mouseover', (e) => {
-            el.style.transition = '0.1s';
-            if (nowMode == 1) {
-                el.style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
-            } else {
-                el.style.boxShadow = 'rgb(69, 52, 218) 0px 0px 0px 5px';
-            }
-        });
-        el.addEventListener('mouseout', (e) => {
-            el.style.transition = '1s';
-            el.style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
-        });
-    });
-}
-
 var nowMode = 0;
 
 function changeMode() {
@@ -298,4 +342,23 @@ function changeMode() {
         nowMode = 0;
     }
     setHover();
+}
+
+var nowWid = 5;
+var nowHei = 5;
+
+function changeWid() {
+    nowWid ++;
+    if (nowWid == 6) {
+        nowWid = 4;
+    }
+    formatVars(nowHei, nowWid);
+}
+
+function changeHei() {
+    nowHei ++;
+    if (nowHei == 7) {
+        nowHei = 4;
+    }
+    formatVars(nowHei, nowWid);
 }
