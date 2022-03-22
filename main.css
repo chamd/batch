@@ -17,6 +17,12 @@ body, html {
 
 html * {
     font-family: 'Godo';
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div[seat='true'] {
@@ -252,11 +258,11 @@ button:not(.optionbtns) p {
 }
 
 .save {
-    margin-left: 45px;
+    margin-left: 135px;
 }
 
 .load {
-    margin-left: 135px;
+    margin-left: 225px;
 }
 
 .save:hover::before {
@@ -325,12 +331,12 @@ li:hover::before {
 
 .wid {
     right: 0;
-    margin-right: 135px;
+    margin-right: 225px;
 }
 
 .hei {
     right: 0;
-    margin-right: 45px;
+    margin-right: 135px;
 }
 
 .wid:hover::before {
