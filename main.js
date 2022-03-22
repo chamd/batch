@@ -7,42 +7,44 @@ var selectedSeat;
 var pinnedSeat = [];
 
 function changeSeat(n) {
-    if (nowMode == 0) {
-        if (!isSelectSeat) {
-            getel(n).style.backgroundColor = 'rgba(69, 52, 218, 0.5)';
-            selectedSeat = n;
-            isSelectSeat = true
-        } else {
-            getel(n).style.transition = '0.3s';
-            getel(selectedSeat).style.transition = '0.3s';
-            getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-            var _change = getel(selectedSeat).className;
-            getel(selectedSeat).className = getel(n).className;
-            getel(n).className = _change;
-            [seats[n - 1], seats[selectedSeat - 1]] = [seats[selectedSeat - 1], seats[n - 1]];
-            setTimeout(() => {
-                formatSeat();
-            }, 300);
-            selectedSeat = '';
-            isSelectSeat = false;
-        }
-    } if (nowMode == 1) {
-        if (getel(n).classList[2] != 'pin') {
-            getel(n).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
-            pinnedSeat.push(getel(n).className);
-            getel(n).classList.add('pin');
-        } else {
-            getel(n).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-            getel(n).classList.remove('pin');
-            var _index = pinnedSeat.indexOf(getel(n).className);
-            if (_index != -1) {
-                pinnedSeat.splice(_index, 1);
+    if (canChangeSeat) {
+        if (nowMode == 0) {
+            if (!isSelectSeat) {
+                getel(n).style.backgroundColor = 'rgba(69, 52, 218, 0.5)';
+                selectedSeat = n;
+                isSelectSeat = true
+            } else {
+                getel(n).style.transition = '0.3s';
+                getel(selectedSeat).style.transition = '0.3s';
+                getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                var _change = getel(selectedSeat).className;
+                getel(selectedSeat).className = getel(n).className;
+                getel(n).className = _change;
+                [seats[n - 1], seats[selectedSeat - 1]] = [seats[selectedSeat - 1], seats[n - 1]];
+                setTimeout(() => {
+                    formatSeat();
+                }, 300);
+                selectedSeat = '';
+                isSelectSeat = false;
             }
-        }
-    } else if (nowMode == 2) {
-        if (seats[n - 1] != undefined) {
-            seats.splice(n - 1, 1);
-            formatSeat();
+        } if (nowMode == 1) {
+            if (getel(n).classList[2] != 'pin') {
+                getel(n).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+                pinnedSeat.push(getel(n).className);
+                getel(n).classList.add('pin');
+            } else {
+                getel(n).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                getel(n).classList.remove('pin');
+                var _index = pinnedSeat.indexOf(getel(n).className);
+                if (_index != -1) {
+                    pinnedSeat.splice(_index, 1);
+                }
+            }
+        } else if (nowMode == 2) {
+            if (seats[n - 1] != undefined) {
+                seats.splice(n - 1, 1);
+                formatSeat();
+            }
         }
     }
 }
@@ -115,7 +117,7 @@ function formatVars(_a, _b) {
 formatVars(5, 5);
 
 function detectBlank(n, _b) {
-    if (seats[n] == '') {
+    if (seats[n] == '' || seats[n] == undefined) {
         if (n == all - 1) {
             seats.splice(n - _b, _b + 1);
         } else {
@@ -174,10 +176,17 @@ function openWHMenu() {
     }
 }
 
+var canChangeSeat = true;
+
 function setSeat() {
-    if (document.getElementsByClassName('btn1')[0].className != 'btn1 cant') {
-        document.getElementsByClassName('btn1')[0].classList.add('cant');
+    if (canChangeSeat) {
+        if (getel(selectedSeat)) getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+        selectedSeat = '';
+        isSelectSeat = false;
+
+        canChangeSeat = false;
         document.getElementsByClassName('btn1')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
+        document.getElementsByClassName('mode')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
 
         var list = document.querySelectorAll('div[seat]');
 
@@ -188,10 +197,10 @@ function setSeat() {
                 e.classList.add('dispenser');
             }
         }
-    
+
         setTimeout(() => {
             var _seats = [];
-    
+
             for (let i = 1; i <= a; i++) {
                 for (let j = 1; j <= b; j++) {
                     if (!document.getElementsByClassName(`a${i} b${j} pin`)[0]) {
@@ -199,7 +208,7 @@ function setSeat() {
                     }
                 }
             }
-    
+
             for (let i = 0; i < all; i++) {
                 (function (x) {
                     setTimeout(function () {
@@ -219,16 +228,17 @@ function setSeat() {
                                     }
                                 }
                                 formatSeat();
-                                document.getElementsByClassName('btn1')[0].classList.remove('cant');
+                                canChangeSeat = true;
                                 document.getElementsByClassName('btn1')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+                                document.getElementsByClassName('mode')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
                             }, 1000);
                         }
                     }, 150 * x);
                 })(i);
             }
-    
+
         }, 1000);
-    
+
     }
 }
 
@@ -324,29 +334,30 @@ function removeSeat(n) {
 var nowMode = 0;
 
 function changeMode() {
-    if (nowMode == 0) {
-        document.documentElement.style.setProperty('--mode', '\'모드: 자리고정\'');
-        document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-thumbtack"></i>';
-        nowMode = 1;
+    if (canChangeSeat) {
+        if (nowMode == 0) {
+            document.documentElement.style.setProperty('--mode', '\'모드: 자리고정\'');
+            document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-thumbtack"></i>';
+            nowMode = 1;
 
-        // getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-        formatSeat();
-        selectedSeat = '';
-        isSelectSeat = false;
-
-    } else if (nowMode == 1) {
-        document.documentElement.style.setProperty('--mode', '\'모드: 자리삭제\'');
-        document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-trash-can"></i>';    
-        nowMode = 2;
-        // document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
-        // document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
-        // nowMode = 0;
-    } else {
-        document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
-        document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
-        nowMode = 0;
+            if (getel(selectedSeat)) getel(selectedSeat).style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            formatSeat();
+            selectedSeat = '';
+            isSelectSeat = false;
+        } else if (nowMode == 1) {
+            document.documentElement.style.setProperty('--mode', '\'모드: 자리삭제\'');
+            document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+            nowMode = 2;
+            // document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
+            // document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
+            // nowMode = 0;
+        } else {
+            document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
+            document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
+            nowMode = 0;
+        }
+        setHover();
     }
-    setHover();
 }
 
 var nowWid = 5;
@@ -373,4 +384,20 @@ function changeHei() {
     getel('popup').style.height = `${a * 110 + 130}px`;
     getel('nameOuter').style.height = `${a * 110 - 50}px`;
     getel('nameList').style.height = `${a * 110 - 80}px`;
+}
+
+function closeMenus() {
+    document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+    document.getElementsByClassName('wid')[0].style.display = 'none';
+    document.getElementsByClassName('hei')[0].style.display = 'none';
+    getel('whMenuCover').style.display = 'none';
+
+    isWHMenuOpen = false;
+
+    document.getElementsByClassName('saveload')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+    document.getElementsByClassName('save')[0].style.display = 'none';
+    document.getElementsByClassName('load')[0].style.display = 'none';
+    getel('slMenuCover').style.display = 'none';
+
+    isSLMenuOpen = false;
 }
