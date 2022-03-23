@@ -329,6 +329,20 @@ li:hover::before {
     left: -60px;
 }
 
+.help {
+    z-index: 0;
+    display: block;
+    left: 0;
+    margin-left: calc(50% - 230px);
+    margin-top: -110px;
+}
+
+.help:hover::before {
+    content: '도움말';
+    width: 100px;
+    left: -10px;
+}
+
 .wid {
     right: 0;
     margin-right: 225px;

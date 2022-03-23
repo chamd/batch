@@ -187,6 +187,7 @@ function setSeat() {
         canChangeSeat = false;
         document.getElementsByClassName('btn1')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
         document.getElementsByClassName('mode')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
+        document.getElementsByClassName('btn2')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
 
         var list = document.querySelectorAll('div[seat]');
 
@@ -231,6 +232,7 @@ function setSeat() {
                                 canChangeSeat = true;
                                 document.getElementsByClassName('btn1')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
                                 document.getElementsByClassName('mode')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+                                document.getElementsByClassName('btn2')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
                             }, 1000);
                         }
                     }, 150 * x);
@@ -256,40 +258,43 @@ getel('nameInput').addEventListener("keydown", function (e) {
 var isPopup = false;
 
 function option() {
-    if (!isPopup) {
-        getel('popup').style.height = `${a * 110 + 130}px`;
-        getel('nameOuter').style.height = `${a * 110 - 50}px`;
-        getel('nameList').style.height = `${a * 110 - 80}px`;
-        getel('nameInput').style.display = 'inline';
-        document.getElementsByClassName('saveload')[0].style.display = 'block';
-        document.getElementsByClassName('widhei')[0].style.display = 'block';
-
-        isPopup = true;
-    } else {
-        getel('popup').style.height = '0';
-        getel('nameOuter').style.height = '0';
-        getel('nameList').style.height = '0';
-
-        setTimeout(() => {
-            getel('nameInput').style.display = 'none';
-            document.getElementsByClassName('save')[0].style.display = 'none';
-            document.getElementsByClassName('load')[0].style.display = 'none';
-            document.getElementsByClassName('saveload')[0].style.display = 'none';
-            document.getElementsByClassName('saveload')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
-            document.getElementsByClassName('wid')[0].style.display = 'none';
-            document.getElementsByClassName('hei')[0].style.display = 'none';
-            document.getElementsByClassName('widhei')[0].style.display = 'none';
-            document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
-
-            isSLMenuOpen = false;
-            getel('slMenuCover').style.display = 'none';
-            isWHMenuOpen = false;
-            getel('whMenuCover').style.display = 'none';
-        }, 150);
-
-        isPopup = false;
+    if (canChangeSeat) {
+        if (!isPopup) {
+            getel('popup').style.height = `${a * 110 + 130}px`;
+            getel('nameOuter').style.height = `${a * 110 - 50}px`;
+            getel('nameList').style.height = `${a * 110 - 80}px`;
+            getel('nameInput').style.display = 'inline';
+            document.getElementsByClassName('saveload')[0].style.display = 'block';
+            document.getElementsByClassName('widhei')[0].style.display = 'block';
+    
+            isPopup = true;
+        } else {
+            getel('popup').style.height = '0';
+            getel('nameOuter').style.height = '0';
+            getel('nameList').style.height = '0';
+    
+            setTimeout(() => {
+                getel('nameInput').style.display = 'none';
+                document.getElementsByClassName('save')[0].style.display = 'none';
+                document.getElementsByClassName('load')[0].style.display = 'none';
+                document.getElementsByClassName('saveload')[0].style.display = 'none';
+                document.getElementsByClassName('saveload')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+                document.getElementsByClassName('wid')[0].style.display = 'none';
+                document.getElementsByClassName('hei')[0].style.display = 'none';
+                document.getElementsByClassName('widhei')[0].style.display = 'none';
+                document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+    
+                isSLMenuOpen = false;
+                getel('slMenuCover').style.display = 'none';
+                isWHMenuOpen = false;
+                getel('whMenuCover').style.display = 'none';
+            }, 150);
+    
+            isPopup = false;
+        }
+        getel('nameInput').select();
+    
     }
-    getel('nameInput').select();
 }
 
 function saveSeats() {
