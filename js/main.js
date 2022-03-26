@@ -65,7 +65,7 @@ function setHover() {
                 el.style.boxShadow = 'rgb(255, 251, 37) 0px 0px 0px 5px';
             } else if (nowMode == 2) {
                 el.style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
-            }  else {
+            } else {
                 el.style.boxShadow = 'rgb(0, 0, 0) 0px 0px 0px 5px';
             }
         });
@@ -256,10 +256,24 @@ function setSeat() {
 getel('nameInput').addEventListener("keydown", function (e) {
     if (e.keyCode == 13) {
         if (getel('nameInput').value != '') {
-            seats.push(getel('nameInput').value);
-            // seats.sort();
-            getel('nameInput').value = '';
-            formatSeat();
+            if (seats.length == all) {
+                confirmBox('주의!', '자리가 꽉 찼습니다.<br>공백을 채우시겠습니까?<br><span>(공백이 없을시 그냥 넘어감)</span>', (res) => {
+                    if (res) {
+                        for (let i = 0; i < seats.length; i++) {
+                            if (seats[i] == undefined || seats[i] == '') {
+                                seats[i] = getel('nameInput').value
+                                break;
+                            }
+                        }
+                    }
+                    getel('nameInput').value = '';
+                    formatSeat();
+                });
+            } else {
+                seats.push(getel('nameInput').value);
+                getel('nameInput').value = '';
+                formatSeat();
+            }
         }
     }
 });
@@ -275,13 +289,13 @@ function option() {
             getel('nameInput').style.display = 'inline';
             document.getElementsByClassName('saveload')[0].style.display = 'block';
             document.getElementsByClassName('widhei')[0].style.display = 'block';
-    
+
             isPopup = true;
         } else {
             getel('popup').style.height = '0';
             getel('nameOuter').style.height = '0';
             getel('nameList').style.height = '0';
-    
+
             setTimeout(() => {
                 getel('nameInput').style.display = 'none';
                 document.getElementsByClassName('save')[0].style.display = 'none';
@@ -292,17 +306,17 @@ function option() {
                 document.getElementsByClassName('hei')[0].style.display = 'none';
                 document.getElementsByClassName('widhei')[0].style.display = 'none';
                 document.getElementsByClassName('widhei')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
-    
+
                 isSLMenuOpen = false;
                 getel('slMenuCover').style.display = 'none';
                 isWHMenuOpen = false;
                 getel('whMenuCover').style.display = 'none';
             }, 150);
-    
+
             isPopup = false;
         }
         getel('nameInput').select();
-    
+
     }
 }
 
@@ -419,4 +433,27 @@ function closeMenus() {
     getel('slMenuCover').style.display = 'none';
 
     isSLMenuOpen = false;
+}
+
+function confirmBox(title, msg, f) {
+    getel('confirmBlack').style.display = 'block';
+    getel('confirm').style.display = 'block';
+    getel('confirmTitle').innerHTML = title;
+    getel('confirmMessage').innerHTML = msg;
+    getel('nameInput').blur();
+
+    getel('confirmOk').addEventListener('click', () => {
+        f(true);
+        getel('confirmBlack').style.display = 'none';
+        getel('confirm').style.display = 'none';
+        return;
+    }, { once: true });
+
+    getel('confirmNo').addEventListener('click', () => {
+        f(false);
+        getel('confirmBlack').style.display = 'none';
+        getel('confirm').style.display = 'none';
+        return;
+    }, { once: true });
+
 }

@@ -11,12 +11,12 @@ function openHelp(n) {
         getel(`hp${n}c`).style.display = 'block';
         document.querySelector(`#hp${n} span`).innerHTML = '<i class="fa-solid fa-angle-up"></i>';
     }
-    if (getel(`hp4c`).style.display == 'block') {
-        getel(`hp4`).style.borderBottom = '2px solid rgb(156, 156, 156)';
-        getel(`hp4c`).style.borderBottom = 'none';
-    } else if (getel(`hp4c`).style.display == 'none') {
-        getel(`hp4`).style.borderBottom = 'none';
-        getel(`hp4c`).style.borderBottom = '2px solid rgb(156, 156, 156)';
+    if (getel(`hp5c`).style.display == 'block') {
+        getel(`hp5`).style.borderBottom = '2px solid rgb(156, 156, 156)';
+        getel(`hp5c`).style.borderBottom = 'none';
+    } else if (getel(`hp5c`).style.display == 'none') {
+        getel(`hp5`).style.borderBottom = 'none';
+        getel(`hp5c`).style.borderBottom = '2px solid rgb(156, 156, 156)';
     }
 }
 
