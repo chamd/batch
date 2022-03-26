@@ -27,9 +27,9 @@ function changeSeat(n) {
                 selectedSeat = '';
                 isSelectSeat = false;
             }
-        } if (nowMode == 1) {
+        } else if (nowMode == 1) {
             if (getel(n).classList[2] != 'pin') {
-                getel(n).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+                getel(n).style.backgroundColor = 'rgba(255, 251, 37, 0.5)';
                 pinnedSeat.push(getel(n).className);
                 getel(n).classList.add('pin');
             } else {
@@ -42,6 +42,11 @@ function changeSeat(n) {
             }
         } else if (nowMode == 2) {
             if (seats[n - 1] != undefined) {
+                seats[n - 1] = '';
+                formatSeat();
+            }
+        } else if (nowMode == 3) {
+            if (seats[n - 1] == undefined || seats[n - 1] == '') {
                 seats.splice(n - 1, 1);
                 formatSeat();
             }
@@ -57,9 +62,11 @@ function setHover() {
             if (nowMode == 0) {
                 el.style.boxShadow = 'rgb(69, 52, 218) 0px 0px 0px 5px';
             } else if (nowMode == 1) {
-                el.style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
-            } else {
                 el.style.boxShadow = 'rgb(255, 251, 37) 0px 0px 0px 5px';
+            } else if (nowMode == 2) {
+                el.style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
+            }  else {
+                el.style.boxShadow = 'rgb(0, 0, 0) 0px 0px 0px 5px';
             }
         });
         el.addEventListener('mouseout', (e) => {
@@ -86,15 +93,17 @@ function formatSeat() {
                     getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
                 } else {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'></div>`;
+                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>[_____]</li>`;
                 }
             } else {
                 if (seats[ids - 1]) {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
-                    getel(ids).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+                    getel(ids).style.backgroundColor = 'rgba(255, 251, 37, 0.5)';
                     getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
                 } else {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'></div>`;
-                    getel(ids).style.backgroundColor = 'rgba(255, 95, 95, 0.5)';
+                    getel(ids).style.backgroundColor = 'rgba(255, 251, 37, 0.5)';
+                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>[_____]</li>`;
                 }
             }
             ids++;
@@ -331,9 +340,13 @@ function openTextFile() {
 }
 
 function removeSeat(n) {
-    // seats.splice(n, 1);
-    seats[n] = '';
-    formatSeat();
+    if (seats[n] == undefined || seats[n] == '') {
+        seats.splice(n, 1);
+        formatSeat();
+    } else {
+        seats[n] = '';
+        formatSeat();
+    }
 }
 
 var nowMode = 0;
@@ -353,9 +366,10 @@ function changeMode() {
             document.documentElement.style.setProperty('--mode', '\'모드: 자리삭제\'');
             document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-trash-can"></i>';
             nowMode = 2;
-            // document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
-            // document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
-            // nowMode = 0;
+        } else if (nowMode == 2) {
+            document.documentElement.style.setProperty('--mode', '\'모드: 공백삭제\'');
+            document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-circle-minus"></i>';
+            nowMode = 3;
         } else {
             document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
             document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
