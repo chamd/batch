@@ -457,3 +457,11 @@ function confirmBox(title, msg, f) {
     }, { once: true });
 
 }
+
+function openHtml(name) {
+    getel('indexHtml').style.display = 'none';
+    getel('helpHtml').style.display = 'none';
+
+    getel(`${name}Html`).style.display = 'block';
+
+}

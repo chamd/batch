@@ -460,3 +460,11 @@ li:not(.helps *):hover::before {
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 9;
 }
+
+#indexHtml {
+    display: block;
+}
+
+#helpHtml {
+    display: none;
+}
