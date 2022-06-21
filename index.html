@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -12,10 +12,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 
-<body>
+<body id="body">
+    <div class="copyright">
+        <a href="https://github.com/chamd/batch">
+            &copy; 2022.
+            <b>chamd</b>
+            <i class="fa-brands fa-github"></i>
+        </a>
+    </div>
+
     <div id="indexHtml">
-        <div id="popup">
-            <input id='nameInput' placeholder="이름 추가" onclick="closeMenus();">
+        
+        <div id="nameInputBlack" onclick='toggleNameInput();'></div>
+        <input id='nameInput' placeholder="이름 추가" onclick="closeMenus();">
+        <button id="closeNameInput" onclick='toggleNameInput();'>&times;</button>
+
+        <!-- <div id="popup">
+
+
             <button class='optionbtns save' onclick="saveSeats();"><i class="fa-solid fa-floppy-disk"></i></button>
             <button class='optionbtns load' onclick="openTextFile();"><i class="fa-solid fa-file-import"></i></button>
             <button class='optionbtns saveload' onclick="openSLMenu();"><i class="fa-solid fa-folder-open"></i></button>
@@ -30,19 +44,25 @@
                 <ul id="nameList">
                 </ul>
             </div>
-        </div>
+        </div> -->
 
         <div id="confirmBlack"></div>
         <div id="confirm">
             <p id="confirmTitle"></p>
             <p id="confirmMessage"></p>
-            <button id="confirmOk" class="confirmbtn">예</button>
-            <button id="confirmNo" class="confirmbtn">아니요</button>
+            <input id="confirmInput" placeholder="이름 변경">
+            <button id="confirmOk" class="confirmbtn"></button>
+            <button id="confirmNo" class="confirmbtn"></button>
         </div>
 
-        <button class='btn2' onclick='option();'>
+        <!-- <button class='btn2' onclick='option();'>
             칠판
             <p>OPTION</p>
+        </button> -->
+
+        <button class='btn2' onclick='toggleNameInput();'>
+            칠판
+            <p>ADD NAME</p>
         </button>
 
         <button class='btn1' onclick='setSeat();'>
@@ -50,11 +70,29 @@
             <p>GO!</p>
         </button>
 
-        <button class='optionbtns help' onclick="openHtml('help');"><i
-                class="fa-solid fa-question"></i></button>
+        <!-- <button class='optionbtns help' onclick="openHtml('help');"><i
+                class="fa-solid fa-question"></i></button> -->
+        <button class='optionbtns st save' onclick="openSaves();"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button class="optionbtns st saves stxt" onclick="saveSeats();"><i class="fa-solid fa-file-word"></i></button>
+        <button class="optionbtns st saves sxls" onclick="EsaveSeats();"><i class="fa-solid fa-file-excel"></i></button>
+        <div id="savesCover"></div>
+
+        <button class='optionbtns st load' onclick="openLoads();"><i class="fa-solid fa-file-import"></i></button>
+        <button class="optionbtns st loads ltxt" onclick="openTextFile();"><i class="fa-solid fa-file-word"></i></button>
+        <button class="optionbtns st loads lxls" onclick="EopenTextFile();"><i class="fa-solid fa-file-excel"></i></button>
+        <div id="loadsCover"></div>
+
+        <button class='optionbtns st wid' onclick="changeWid();"><i class="fa-solid fa-arrows-left-right"></i></button>
+        <button class='optionbtns st hei' onclick="changeHei();"><i class="fa-solid fa-arrows-up-down"></i></button>
+        <button class='optionbtns st log' onclick="openHtml('log');"><i class="fa-solid fa-file-pen"></i></button>
+        <!-- <button class='optionbtns st help' onclick="openHtml('help');"><i class="fa-solid fa-question"></i></button> -->
+        <button class='optionbtns setting' onclick="openSetting();"><i class="fa-solid fa-gear"></i></button>
+        <div id="stCover"></div>
+
         <button class='optionbtns mode' onclick="changeMode();"><i class="fa-solid fa-arrows-rotate"></i></button>
 
-        <div id="content"></div>
+        <div id="content"></div>        
+        
     </div>
     <div id="helpHtml">
         <button class='back' onclick="openHtml('index');"><i class="fa-solid fa-arrow-left"></i></button>
@@ -63,21 +101,71 @@
     
         <p class="helptitle">도움말</p>
         <ul class="helps">
-            <li id="hp1" onclick="openHelp(1);"><span><i class="fa-solid fa-angle-down"></i></span>리스트에 이름을 어떻게 추가하나요?</li>
-            <li class="helpcontent" id="hp1c">[칠판] > [이름 추가] 에서 이름을 작성 후<br>[엔터] 키를 눌러주면 리스트에 이름이 생성됩니다.</li>
-            <li id="hp2" onclick="openHelp(2);"><span><i class="fa-solid fa-angle-down"></i></span>리스트에서 이름을 어떻게 삭제하나요?</li>
-            <li class="helpcontent" id="hp2c">[칠판] 안에 있는 리스트에서 이름을 클릭하면 이름이 삭제됩니다.</li>
-            <li id="hp3" onclick="openHelp(3);"><span><i class="fa-solid fa-angle-down"></i></span>랜덤 자리 배치를 어떻게 하나요?</li>
-            <li class="helpcontent" id="hp3c">[교탁]을 누르면 랜덤 자리 배치가 시작됩니다.<br>자리가 배치되는 동안은 아무 기능을 사용할 수 없습니다.</li>
-            <li id="hp4" onclick="openHelp(4);"><span><i class="fa-solid fa-angle-down"></i></span>공백삭제 모드는 어떤 기능인가요?</li>
-            <li class="helpcontent" id="hp4c">공백삭제 모드는 정말로 자리를 '삭제'하는 것 입니다.<br>만약 공백삭제 모드를 사용한다면 자리가 한칸씩 왼쪽으로 밀립니다.</li>
+            <li id="hp1" onclick="openHelp(1);"><span><i class="fa-solid fa-angle-down"></i></span>랜덤 자리 배치를 어떻게 하나요?</li>
+            <li class="helpcontent" id="hp1c">[교탁]을 누르면 랜덤 자리 배치가 시작됩니다.<br>자리가 배치되는 동안은 아무 기능도 사용할 수 없습니다.</li>
+            <li id="hp2" onclick="openHelp(2);"><span><i class="fa-solid fa-angle-down"></i></span></li>
+            <li class="helpcontent" id="hp2c"></li>
+            <li id="hp3" onclick="openHelp(3);"><span><i class="fa-solid fa-angle-down"></i></span></li>
+            <li class="helpcontent" id="hp3c"></li>
+            <li id="hp4" onclick="openHelp(4);"><span><i class="fa-solid fa-angle-down"></i></span></li>
+            <li class="helpcontent" id="hp4c"></li>
             <li id="hp5" onclick="openHelp(5);"><span><i class="fa-solid fa-angle-down"></i></span>오류가 났어요. 어디에 제보해야하나요?</li>
             <li class="helpcontent" id="hp5c">chana051226@gmail.com에 제보해주세요!!</li>
         </ul>
     </div>
 
+    <div id='logHtml'>
+        <button class='back' onclick="openHtml('index');"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="banner"><p>by 정선고 무한상상러</p></div>
+        <img class='mhssicon' src="mhssicon.png" alt="무한상상러 아이콘">
+
+        <p class="helptitle">패치노트</p>
+        <div class="logs">
+            <ul>[ ver 1.0 ]
+                <li>자리배치 추가</li>
+            </ul>
+            <ul>[ ver 2.0 ]
+                <li>칠판(OPTION) 삭제</li>
+                <ul>
+                    <li>리스트 기능 삭제</li>
+                    <li>저장옵션, 크기옵션을 설정으로 통합</li>
+                    <li>이름 추가를 칠판(ADD NAME)으로 통합</li>
+                </ul>
+                <li>칠판(ADD NAME) 추가</li>
+                <ul>
+                    <li>이름 추가 추가</li>
+                    <li>이름 추가 종료 버튼 추가</li>
+                </ul>
+                <li>도움말 삭제</li>
+                <li>모드 변경</li>
+                <ul>
+                    <li>공백삭제모드를 자리삭제모드로 통합</li>
+                    <li>이름변경모드 추가</li>
+                </ul>
+                <li>설정 추가</li>
+                <ul>
+                    <li>저장하기</li>
+                    <ul>
+                        <li>텍스트파일로 저장하기</li>
+                        <li>엑셀파일로 저장하기</li>
+                    </ul>
+                    <li>불러오기</li>
+                    <ul>
+                        <li>텍스트파일로 불러오기</li>
+                        <li>엑셀파일로 불러오기</li>
+                    </ul>
+                    <li>가로(아이콘 변경)</li>
+                    <li>세로(아이콘 변경)</li>
+                    <li>패치노트</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+
+    <script src="dist/xlsx.full.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/help.js"></script>
+    <script src="js/new.js"></script>
 
 </body>
 

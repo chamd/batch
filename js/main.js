@@ -41,15 +41,27 @@ function changeSeat(n) {
                 }
             }
         } else if (nowMode == 2) {
-            if (seats[n - 1] != undefined) {
+            if (seats[n - 1] != undefined && seats[n - 1] != '') {
                 seats[n - 1] = '';
                 formatSeat();
+            } else if (seats[n - 1] == '') {
+                confirmBox('주의!', '공백을 삭제하시겠습니까?<br><span>(공백 삭제시 자리가 한칸씩 당겨짐)</span>', 'none', '예', '아니요', (res) => {
+                    if (res) {
+                        seats.splice(n - 1, 1);
+                        formatSeat();
+                    }
+                });
             }
         } else if (nowMode == 3) {
-            if (seats[n - 1] == undefined || seats[n - 1] == '') {
-                seats.splice(n - 1, 1);
-                formatSeat();
+            while (seats[n - 1] == undefined) {
+                seats.push('');
             }
+            confirmBox('이름 변경', '변경할 이름은?', 'block', '수정', '취소', (res, input) => {
+                if (res) {
+                    seats[n - 1] = input;
+                    formatSeat();
+                }
+            });
         }
     }
 }
@@ -80,7 +92,7 @@ var seats = [];
 
 function formatSeat() {
     getel('content').innerHTML = '';
-    getel('nameList').innerHTML = '';
+    // getel('nameList').innerHTML = '';
 
     var ids = 1
 
@@ -90,20 +102,20 @@ function formatSeat() {
             if (pinnedSeat.indexOf(`a${i} b${j}`) == -1) {
                 if (seats[ids - 1]) {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
-                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
+                    // getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
                 } else {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j}' id='${ids}' onclick='changeSeat(${ids});'></div>`;
-                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>[_____]</li>`;
+                    // getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>[_____]</li>`;
                 }
             } else {
                 if (seats[ids - 1]) {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'>${seats[ids - 1]}</div>`;
                     getel(ids).style.backgroundColor = 'rgba(255, 251, 37, 0.5)';
-                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
+                    // getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>${seats[ids - 1]}</li>`;
                 } else {
                     getel('content').innerHTML += `<div seat='true' class='a${i} b${j} pin' id='${ids}' onclick='changeSeat(${ids});'></div>`;
                     getel(ids).style.backgroundColor = 'rgba(255, 251, 37, 0.5)';
-                    getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>[_____]</li>`;
+                    // getel('nameList').innerHTML += `<li onclick='removeSeat(${ids - 1});'>[_____]</li>`;
                 }
             }
             ids++;
@@ -193,10 +205,15 @@ function setSeat() {
         selectedSeat = '';
         isSelectSeat = false;
 
+        if (isSettingOpen) {
+            openSetting();
+        }
+
         canChangeSeat = false;
         document.getElementsByClassName('btn1')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
         document.getElementsByClassName('mode')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
         document.getElementsByClassName('btn2')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
+        document.getElementsByClassName('setting')[0].style.boxShadow = 'rgb(255, 95, 95) 0px 0px 0px 5px';
 
         var list = document.querySelectorAll('div[seat]');
 
@@ -242,6 +259,7 @@ function setSeat() {
                                 document.getElementsByClassName('btn1')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
                                 document.getElementsByClassName('mode')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
                                 document.getElementsByClassName('btn2')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
+                                document.getElementsByClassName('setting')[0].style.boxShadow = 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px';
                             }, 1000);
                         }
                     }, 150 * x);
@@ -256,8 +274,8 @@ function setSeat() {
 getel('nameInput').addEventListener("keydown", function (e) {
     if (e.keyCode == 13) {
         if (getel('nameInput').value != '') {
-            if (seats.length == all) {
-                confirmBox('주의!', '자리가 꽉 찼습니다.<br>공백을 채우시겠습니까?<br><span>(공백이 없을시 그냥 넘어감)</span>', (res) => {
+            if (seats.length >= all) {
+                confirmBox('주의!', '자리가 꽉 찼습니다.<br>공백을 채우시겠습니까?<br><span>(공백이 없을시 그냥 넘어감)</span>', 'none', '예', '아니요', (res) => {
                     if (res) {
                         for (let i = 0; i < seats.length; i++) {
                             if (seats[i] == undefined || seats[i] == '') {
@@ -381,8 +399,8 @@ function changeMode() {
             document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-trash-can"></i>';
             nowMode = 2;
         } else if (nowMode == 2) {
-            document.documentElement.style.setProperty('--mode', '\'모드: 공백삭제\'');
-            document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-circle-minus"></i>';
+            document.documentElement.style.setProperty('--mode', '\'모드: 이름변경\'');
+            document.getElementsByClassName('mode')[0].innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
             nowMode = 3;
         } else {
             document.documentElement.style.setProperty('--mode', '\'모드: 자리변경\'');
@@ -398,12 +416,15 @@ var nowHei = 5;
 
 function changeWid() {
     nowWid++;
+    document.documentElement.style.setProperty('--num5', '0');
     if (nowWid == 6) {
         nowWid = 4;
+        document.documentElement.style.setProperty('--num5', '1');
     }
     formatVars(nowHei, nowWid);
 
-    document.getElementsByClassName('wid')[0].innerHTML = `<i class="fa-solid fa-${nowWid}"></i>`;
+    // document.getElementsByClassName('wid')[0].innerHTML = `<i class="fa-solid fa-${nowWid}"></i>`;
+    document.documentElement.style.setProperty('--whw', `\'가로: ${nowWid}\'`);
 }
 
 function changeHei() {
@@ -413,7 +434,8 @@ function changeHei() {
     }
     formatVars(nowHei, nowWid);
 
-    document.getElementsByClassName('hei')[0].innerHTML = `<i class="fa-solid fa-${nowHei}"></i>`;
+    // document.getElementsByClassName('hei')[0].innerHTML = `<i class="fa-solid fa-${nowHei}"></i>`;
+    document.documentElement.style.setProperty('--whh', `\'세로: ${nowHei}\'`);
     getel('popup').style.height = `${a * 110 + 130}px`;
     getel('nameOuter').style.height = `${a * 110 - 50}px`;
     getel('nameList').style.height = `${a * 110 - 80}px`;
@@ -435,15 +457,23 @@ function closeMenus() {
     isSLMenuOpen = false;
 }
 
-function confirmBox(title, msg, f) {
+function confirmBox(title, msg, input, ok, no, f) {
     getel('confirmBlack').style.display = 'block';
     getel('confirm').style.display = 'block';
+    getel('confirmInput').style.display = input;
     getel('confirmTitle').innerHTML = title;
     getel('confirmMessage').innerHTML = msg;
+    getel('confirmOk'). innerHTML = ok;
+    getel('confirmNo'). innerHTML = no;
+    getel('confirmInput').value = '';
     getel('nameInput').blur();
 
     getel('confirmOk').addEventListener('click', () => {
-        f(true);
+        if (input == 'none') {
+            f(true);
+        } else {
+            f(true, getel('confirmInput').value);
+        }
         getel('confirmBlack').style.display = 'none';
         getel('confirm').style.display = 'none';
         return;
@@ -455,12 +485,12 @@ function confirmBox(title, msg, f) {
         getel('confirm').style.display = 'none';
         return;
     }, { once: true });
-
 }
 
 function openHtml(name) {
     getel('indexHtml').style.display = 'none';
     getel('helpHtml').style.display = 'none';
+    getel('logHtml').style.display = 'none';
 
     getel(`${name}Html`).style.display = 'block';
 

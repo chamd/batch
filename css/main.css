@@ -8,7 +8,10 @@
     --num2: 150px;
     --num3: 5;
     --num4: 5;
+    --num5: 0;
     --mode: '모드: 자리변경';
+    --whw: '가로: 5';
+    --whh: '세로: 5';
 }
 
 body, html {
@@ -121,11 +124,11 @@ button {
     cursor: pointer;
 }
 
-button:not(.optionbtns):hover {
+button:not(.optionbtns):not(.closeNameInput):hover {
     background-color: rgba(236, 236, 236, 0.5);
 }
 
-button:not(.optionbtns):active {
+button:not(.optionbtns):not(.closeNameInput):active {
     background-color: rgba(211, 211, 211, 0.5);
 }
 
@@ -145,27 +148,6 @@ button:not(.optionbtns) p {
 .dispenser {
     margin-top: calc( var(--num1) * var(--num4) );
     margin-left: calc( var(--num2) * (var(--num3) - 1) / 2 );
-}
-
-#nameInput {
-    display: none;
-    z-index: 2;
-    width: 250px;
-    height: 100px;
-    font-size: 50px;
-    position: absolute;
-    border-radius: 15px;
-    border: none;
-    margin-left: calc(50% - 125px);
-    padding: 0;
-    text-align: center;
-    margin-top: 20px;
-    background-color: rgb(236, 236, 236);
-    box-shadow: rgb(138, 138, 138) 3px 3px 6px 0px inset, rgba(218, 218, 218, 0.5) -3px -3px 6px 1px inset;
-}
-
-#nameInput:focus {
-    outline: none;
 }
 
 #popup {
@@ -213,7 +195,6 @@ button:not(.optionbtns) p {
 }
 
 .optionbtns {
-    display: none;
     position: absolute;
     border-radius: 20px;
     border: none;
@@ -258,7 +239,7 @@ button:not(.optionbtns) p {
     top: -20px;
 }
 
-.save {
+/* .save {
     margin-left: 135px;
 }
 
@@ -272,7 +253,7 @@ button:not(.optionbtns) p {
 
 .load:hover::before {
     content: '불러오기';
-}
+} */
 
 .saveload {
     margin-left: 45px;
@@ -296,7 +277,7 @@ button:not(.optionbtns) p {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
-li:not(.helps *):hover {
+/* li:not(.helps *):hover {
     text-decoration: underline;
     cursor: pointer;
 }
@@ -314,7 +295,7 @@ li:not(.helps *):hover::before {
     font-size: 40px;
     text-align: center;
     z-index: 3;
-}
+} */
 
 .mode {
     z-index: 0;
@@ -330,7 +311,7 @@ li:not(.helps *):hover::before {
     left: -60px;
 }
 
-.help {
+/* .help {
     z-index: 0;
     display: block;
     left: 0;
@@ -342,9 +323,9 @@ li:not(.helps *):hover::before {
     content: '도움말';
     width: 100px;
     left: -10px;
-}
+} */
 
-.wid {
+/* .wid {
     right: 0;
     margin-right: 225px;
 }
@@ -360,7 +341,7 @@ li:not(.helps *):hover::before {
 
 .hei:hover::before {
     content: '세로';
-}
+} */
 
 .widhei {
     right: 0;
@@ -425,6 +406,17 @@ li:not(.helps *):hover::before {
     font-size: 25px;
 }
 
+#confirmInput {
+    text-align: center;
+    font-size: 30px;
+    width: 300px;
+    height: 70px;
+    border-radius: 15px;
+    margin-left: calc(50% - 150px);
+    background-color: rgb(236, 236, 236);
+    box-shadow: rgb(138, 138, 138) 3px 3px 6px 0px inset, rgba(218, 218, 218, 0.5) -3px -3px 6px 1px inset;
+}
+
 .confirmbtn {
     position: absolute;
     right: 10px;
@@ -467,4 +459,169 @@ li:not(.helps *):hover::before {
 
 #helpHtml {
     display: none;
+}
+
+#logHtml {
+    display: none;
+}
+
+.copyright {
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.copyright a {
+    text-decoration: none;
+    color: black;
+}
+
+#nameInput {
+    display: none;
+    z-index: 5;
+    width: calc(var(--num2) * var(--num3) - 10px);
+    height: 90px;
+    font-size: 50px;
+    position: absolute;
+    border-radius: 15px;
+    border: none;
+    margin-left: calc(50% - ((var(--num2) * var(--num3)) / 2));
+    padding: 0;
+    text-align: center;
+    margin-top: 10px;
+    background-color: rgb(236, 236, 236);
+    box-shadow: rgb(138, 138, 138) 3px 3px 6px 0px inset, rgba(218, 218, 218, 0.5) -3px -3px 6px 1px inset;
+}
+
+#nameInput:focus {
+    outline: none;
+}
+
+#closeNameInput {
+    display: none;
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    margin-top: 20px;
+    z-index: 5;
+    margin-left: calc(50% + ((var(--num2) * var(--num3)) / 2) - 90px);
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(255, 73, 73);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    font-size: 50px;
+}
+
+#closeNameInput:hover {
+    background-color: rgb(218, 53, 53);
+}
+
+#closeNameInput:active {
+    background-color: rgb(158, 25, 25);
+}
+
+#nameInputBlack {
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 4;
+}
+
+.setting {
+    z-index: 2;
+    display: block;
+    left: 0;
+    margin-left: calc(50% - (180px + (75px * (var(--num3) - 3))));
+    margin-top: -110px;
+}
+
+.setting:hover::before {
+    content: '설정';
+    width: 100px;
+    left: -10px;
+}
+
+.st {
+    display: none;
+    margin-left: calc(-451px + (75px * var(--num5)));
+    margin-top: 220px;
+    z-index: 3;
+}
+
+#stCover:not(.setting) {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100px;
+    height: calc(10px + (90px * 6));
+    z-index: 1;
+    margin-left: calc(-461px + (75px * var(--num5)));
+    margin-top: 120px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.save:hover::before {
+    content: '저장하기';
+}
+
+.stxt:hover::before, .ltxt:hover::before {
+    content: '텍스트 txt';
+    width: 160px;
+    left: -40px;
+}
+
+.sxls:hover::before, .lxls:hover::before {
+    content: '엑셀 xlsx';
+    width: 160px;
+    left: -40px;
+}
+
+.load:hover::before {
+    content: '불러오기';
+}
+
+.wid:hover::before {
+    content: var(--whw);
+}
+
+.hei:hover::before {
+    content: var(--whh);
+}
+
+.log:hover::before {
+    content: '패치노트';
+}
+
+.help:hover::before {
+    content: '도움말';
+}
+
+#savesCover {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 280px;
+    height: 100px;
+    z-index: 2;
+    margin-left: calc(-461px + (75px * var(--num5)));
+    margin-top: 210px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+#loadsCover {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 280px;
+    height: 100px;
+    z-index: 2;
+    margin-left: calc(-461px + (75px * var(--num5)));
+    margin-top: 300px;
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
