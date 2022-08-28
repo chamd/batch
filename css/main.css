@@ -477,6 +477,38 @@ li:not(.helps *):hover::before {
     color: black;
 }
 
+.btm {
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.version {
+    left: 20px;
+    width: 100px;
+}
+
+.manual {
+    left: 140px;
+    width: 160px;
+    cursor: pointer;
+    transition: .1s;
+}
+
+.manual:hover {
+    box-shadow: rgb(69, 52, 218) 0px 0px 0px 5px;
+}
+
+.manual:active {
+    background-color: rgba(69, 52, 218, 0.5);
+}
+
 #nameInput {
     display: none;
     z-index: 5;

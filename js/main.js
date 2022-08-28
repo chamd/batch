@@ -418,6 +418,8 @@ function changeWid() {
     nowWid++;
     document.documentElement.style.setProperty('--num5', '0');
     if (nowWid == 6) {
+        document.documentElement.style.setProperty('--num5', '-1');
+    } else if (nowWid == 7) {
         nowWid = 4;
         document.documentElement.style.setProperty('--num5', '1');
     }
@@ -485,6 +487,7 @@ function confirmBox(title, msg, input, ok, no, f) {
         getel('confirm').style.display = 'none';
         return;
     }, { once: true });
+
 }
 
 function openHtml(name) {
@@ -494,4 +497,10 @@ function openHtml(name) {
 
     getel(`${name}Html`).style.display = 'block';
 
+}
+
+function enterkey() {
+	if (window.event.keyCode == 13) {
+    	alert("test");
+    }
 }
