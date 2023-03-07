@@ -496,11 +496,16 @@ function openHtml(name) {
     getel('logHtml').style.display = 'none';
 
     getel(`${name}Html`).style.display = 'block';
-
-}
-
-function enterkey() {
-	if (window.event.keyCode == 13) {
-    	alert("test");
+    if (name == 'log') {
+        document.getElementsByClassName('adBanner')[0].top = '305px';
+    } else {
+        document.getElementsByClassName('adBanner')[0].top = '0px';
     }
+
 }
+
+// function enterkey() {
+// 	if (window.event.keyCode == 13) {
+//     	alert("test");
+//     }
+// }

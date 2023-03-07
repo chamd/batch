@@ -413,8 +413,9 @@ li:not(.helps *):hover::before {
     height: 70px;
     border-radius: 15px;
     margin-left: calc(50% - 150px);
-    background-color: rgb(236, 236, 236);
-    box-shadow: rgb(138, 138, 138) 3px 3px 6px 0px inset, rgba(218, 218, 218, 0.5) -3px -3px 6px 1px inset;
+    background-color: rgb(241, 241, 241);
+    /* box-shadow: rgb(194, 194, 194) 3px 3px 6px 0px inset, rgba(237, 237, 237, 0.5) -3px -3px 6px 1px inset; */
+    border: none;
 }
 
 .confirmbtn {
@@ -424,7 +425,7 @@ li:not(.helps *):hover::before {
     width: 80px;
     height: 40px;
     background-color: white;
-    border: 1px solid rgb(97, 97, 97);
+    border: none;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     border-radius: 10px;
     font-size: 20px;
