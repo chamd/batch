@@ -497,9 +497,9 @@ function openHtml(name) {
 
     getel(`${name}Html`).style.display = 'block';
     if (name == 'log') {
-        document.getElementsByClassName('adBanner')[0].top = '305px';
+        document.getElementsByClassName('adBanner')[0].style.top = '305px';
     } else {
-        document.getElementsByClassName('adBanner')[0].top = '0px';
+        document.getElementsByClassName('adBanner')[0].style.top = '0px';
     }
 
 }
